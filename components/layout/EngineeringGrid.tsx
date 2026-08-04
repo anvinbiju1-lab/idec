@@ -16,13 +16,13 @@ export const EngineeringGrid: React.FC = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none bg-canvas">
-      {/* 32px Light CAD Grid Pattern */}
+      {/* 32px CAD Grid Pattern */}
       <div
-        className="absolute inset-0 opacity-[0.4]"
+        className="absolute inset-0 opacity-[0.35]"
         style={{
           backgroundImage: `
-            linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+            linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
           `,
           backgroundSize: "32px 32px",
         }}
@@ -32,15 +32,15 @@ export const EngineeringGrid: React.FC = () => {
       <div
         className="absolute inset-0 transition-opacity duration-300 opacity-100"
         style={{
-          background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 107, 0, 0.04), transparent 80%)`,
+          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255, 107, 0, 0.08), transparent 80%)`,
         }}
       />
 
       {/* Subtle CAD Crosshair Marks at Screen Corners */}
-      <div className="absolute top-6 left-6 font-mono text-[10px] text-black/20">+</div>
-      <div className="absolute top-6 right-6 font-mono text-[10px] text-black/20">+</div>
-      <div className="absolute bottom-6 left-6 font-mono text-[10px] text-black/20">+</div>
-      <div className="absolute bottom-6 right-6 font-mono text-[10px] text-black/20">+</div>
+      <div className="absolute top-6 left-6 font-mono text-[10px] text-white/20">+</div>
+      <div className="absolute top-6 right-6 font-mono text-[10px] text-white/20">+</div>
+      <div className="absolute bottom-6 left-6 font-mono text-[10px] text-white/20">+</div>
+      <div className="absolute bottom-6 right-6 font-mono text-[10px] text-white/20">+</div>
     </div>
   );
 };

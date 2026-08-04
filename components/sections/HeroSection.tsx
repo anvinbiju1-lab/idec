@@ -52,23 +52,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
         {/* Hairline Border Overlay */}
         <motion.div
           style={{ opacity: bgBorderOpacity }}
-          className="absolute inset-0 border border-black/5 rounded-[24px] pointer-events-none z-30 shadow-[0_20px_60px_rgba(0,0,0,0.05)]"
+          className="absolute inset-0 border border-white/20 rounded-[24px] pointer-events-none z-30 shadow-[0_30px_90px_rgba(0,0,0,0.95)]"
         />
 
         {/* 32px CAD Grid */}
         <div
-          className="absolute inset-0 opacity-[0.4] pointer-events-none z-0"
+          className="absolute inset-0 opacity-[0.35] pointer-events-none z-0"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
+              linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
             `,
             backgroundSize: "32px 32px",
           }}
         />
 
         {/* Radial Ambient Glow */}
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-amber/10 blur-[100px] rounded-full pointer-events-none z-0" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] bg-amber/5 blur-[100px] sm:blur-[140px] rounded-full pointer-events-none z-0" />
 
         {/* Integrated Flex Container */}
         <div className="relative z-20 flex flex-col justify-between h-full pt-12 sm:pt-16 pb-2">
@@ -83,10 +83,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
                 style={{ y: midgroundY, opacity: midgroundOpacity }}
                 className="pointer-events-auto"
               >
-                <div className="inline-flex items-center gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-white border border-gray-200 text-[10px] sm:text-xs font-mono tracking-wider text-gray-800 shadow-sm">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-sm bg-surface-l2 border border-border-subtle text-[10px] sm:text-xs font-mono tracking-wider text-text-body shadow-sm">
                   <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-phosphor-green animate-pulse" />
-                  <span className="text-gray-900 font-bold">IEDC HOLY GRACE ACADEMY</span>
-                  <span className="text-gray-500 hidden xs:inline">• MALA, KERALA</span>
+                  <span className="text-text-heading font-semibold">IEDC HOLY GRACE ACADEMY</span>
+                  <span className="text-text-muted hidden xs:inline">• MALA, KERALA</span>
                 </div>
               </motion.div>
 
@@ -99,9 +99,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
                 }}
                 className="pointer-events-auto origin-left relative z-30"
               >
-                <h1 className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-sans font-black text-gray-950 tracking-[-0.04em] leading-[1.05]">
+                <h1 className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-sans font-semibold text-text-heading tracking-[-0.04em] leading-[1.05]">
                   BUILD WHAT <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-700 to-amber">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-text-heading via-text-heading to-amber">
                     MATTERS.
                   </span>
                 </h1>
@@ -112,7 +112,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
                 style={{ y: midgroundY, opacity: midgroundOpacity }}
                 className="space-y-4 sm:space-y-6 pointer-events-auto"
               >
-                <p className="text-sm sm:text-lg font-sans text-gray-700 max-w-xl leading-relaxed">
+                <p className="text-sm sm:text-lg font-sans text-text-body max-w-xl leading-relaxed">
                   The official Innovation & Entrepreneurship Development Cell of Holy Grace Academy of Engineering. Turning technical brilliance into high-velocity ventures.
                 </p>
 
@@ -122,7 +122,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
                     size="md"
                     onClick={onExploreClick}
                     icon={<ArrowRight className="w-4 h-4" />}
-                    className="w-full sm:w-auto justify-center bg-gray-950 text-white hover:bg-gray-900"
+                    className="w-full sm:w-auto justify-center"
                   >
                     Explore Innovation →
                   </Button>
@@ -131,7 +131,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
                     variant="secondary"
                     size="md"
                     onClick={onJoinClick}
-                    className="w-full sm:w-auto justify-center bg-white text-gray-900 border border-gray-200 hover:bg-gray-50"
+                    className="w-full sm:w-auto justify-center"
                   >
                     Join the Community
                   </Button>
@@ -152,7 +152,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
           {/* Telemetry Ticker cleanly anchored at bottom */}
           <motion.div
             style={{ y: midgroundY, opacity: midgroundOpacity }}
-            className="pt-3 sm:pt-4 border-t border-black/5 relative z-10 w-full"
+            className="pt-3 sm:pt-4 border-t border-white/[0.06] relative z-10 w-full"
           >
             <TelemetryTicker />
           </motion.div>

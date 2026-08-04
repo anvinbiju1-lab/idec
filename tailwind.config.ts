@@ -8,17 +8,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        canvas: "#FFFFFF",
+        canvas: "#070708",
         surface: {
-          l1: "#F8F9FA",
-          l2: "#F1F3F5",
-          l3: "#E9ECEF",
-          l4: "#DEE2E6",
+          l1: "#0F0F12",
+          l2: "#18181C",
+          l3: "#222228",
+          l4: "#2C2C34",
         },
         text: {
-          heading: "#111827",
-          body: "#4B5563",
-          muted: "#9CA3AF",
+          heading: "#F4F4F6",
+          body: "#8E8E9A",
+          muted: "#3F3F4A",
         },
         amber: {
           DEFAULT: "#FF6B00",
@@ -28,8 +28,8 @@ const config: Config = {
           green: "#10B981",
         },
         border: {
-          subtle: "rgba(0, 0, 0, 0.08)",
-          strong: "rgba(0, 0, 0, 0.18)",
+          subtle: "rgba(255, 255, 255, 0.07)",
+          strong: "rgba(255, 255, 255, 0.18)",
           focus: "#FF6B00",
         },
       },
@@ -45,8 +45,8 @@ const config: Config = {
         full: "9999px",
       },
       boxShadow: {
-        tactile: "0 4px 20px -2px rgba(0, 0, 0, 0.05)",
-        "tactile-hover": "0 20px 40px -4px rgba(0, 0, 0, 0.1), 0 0 30px 0 rgba(255, 107, 0, 0.05)",
+        tactile: "0 4px 20px -2px rgba(0, 0, 0, 0.5)",
+        "tactile-hover": "0 20px 40px -4px rgba(0, 0, 0, 0.8), 0 0 30px 0 rgba(255, 107, 0, 0.05)",
       },
       animation: {
         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
