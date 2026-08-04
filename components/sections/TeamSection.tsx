@@ -70,7 +70,7 @@ export const TeamSection: React.FC = () => {
             showPagination
             showNavigation
             autoPlay
-            autoPlayInterval={3200}
+            speed={0.003}
             pauseOnHover
             onCardClick={(index) => setSelectedMember(TEAM_MEMBERS[index])}
           />

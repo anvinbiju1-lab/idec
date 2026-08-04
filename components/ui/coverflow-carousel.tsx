@@ -36,11 +36,11 @@ export interface CoverflowCarouselProps {
   showCaption?: boolean;
   showPagination?: boolean;
   showNavigation?: boolean;
-  /** Auto play slides */
+  /** Enable continuous smooth motion */
   autoPlay?: boolean;
-  /** Auto play interval in milliseconds */
-  autoPlayInterval?: number;
-  /** Pause auto play on hover */
+  /** Continuous motion speed per frame */
+  speed?: number;
+  /** Pause continuous motion on hover */
   pauseOnHover?: boolean;
   /** Callback when card is clicked */
   onCardClick?: (index: number) => void;
@@ -64,7 +64,7 @@ export function CoverflowCarousel({
   showPagination = false,
   showNavigation = false,
   autoPlay = true,
-  autoPlayInterval = 2500,
+  speed = 0.003,
   pauseOnHover = true,
   onCardClick,
   label = "Cover carousel",
@@ -77,16 +77,18 @@ export function CoverflowCarousel({
   const cardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
   /** Fractional card index at the centre. The single source of truth. */
   const posRef = React.useRef(0);
-  /** Where the current settle is headed. */
+  /** Where the current settle target is headed. */
   const targetRef = React.useRef(0);
   const widthRef = React.useRef(0);
   const rafRef = React.useRef<number | null>(null);
+  const isDraggingRef = React.useRef(false);
   const dragRef = React.useRef<{
     id: number;
     x: number;
     pos: number;
     v: number;
     t: number;
+    hasDragged: boolean;
   } | null>(null);
 
   const [selected, setSelected] = React.useState(0);
@@ -98,7 +100,7 @@ export function CoverflowCarousel({
     [count],
   );
 
-  // Paint straight to the DOM.
+  // Paint 3D positions straight to DOM
   const paint = React.useCallback(() => {
     const width = widthRef.current;
     if (!width) return;
@@ -171,24 +173,33 @@ export function CoverflowCarousel({
     [clamp, settle],
   );
 
-  // Robust AutoPlay Effect
+  // Continuous Smooth Marquee Drift Loop
   React.useEffect(() => {
-    if (!autoPlay || (pauseOnHover && isHovered)) return;
+    let animId: number;
 
-    const interval = setInterval(() => {
-      const nextTarget = Math.round(targetRef.current) + 1;
-      settle(nextTarget);
-    }, autoPlayInterval);
+    const loopDrift = () => {
+      if (autoPlay && !isDraggingRef.current && !(pauseOnHover && isHovered)) {
+        posRef.current += speed;
+        targetRef.current = posRef.current;
+        const currentIdx = indexAt(posRef.current);
+        setSelected(currentIdx);
+        paint();
+      }
+      animId = requestAnimationFrame(loopDrift);
+    };
 
-    return () => clearInterval(interval);
-  }, [autoPlay, autoPlayInterval, isHovered, pauseOnHover, settle]);
+    animId = requestAnimationFrame(loopDrift);
+    return () => cancelAnimationFrame(animId);
+  }, [autoPlay, speed, pauseOnHover, isHovered, indexAt, paint]);
 
+  // Pointer & Mouse Drag Control
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (rafRef.current !== null) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
     event.currentTarget.setPointerCapture(event.pointerId);
+    isDraggingRef.current = true;
     targetRef.current = posRef.current;
     dragRef.current = {
       id: event.pointerId,
@@ -196,6 +207,7 @@ export function CoverflowCarousel({
       pos: posRef.current,
       v: 0,
       t: performance.now(),
+      hasDragged: false,
     };
   };
 
@@ -206,9 +218,16 @@ export function CoverflowCarousel({
     const pitch = widthRef.current * (1 + gap);
     if (!pitch) return;
 
+    const deltaX = event.clientX - drag.x;
+    if (Math.abs(deltaX) > 4) {
+      drag.hasDragged = true;
+    }
+
     const now = performance.now();
     const previous = posRef.current;
-    posRef.current = clamp(drag.pos - (event.clientX - drag.x) / pitch);
+    // Mouse right (positive deltaX) moves cards right (decreases index pos)
+    posRef.current = clamp(drag.pos - deltaX / pitch);
+    targetRef.current = posRef.current;
     drag.v = ((posRef.current - previous) / Math.max(now - drag.t, 1)) * 1000;
     drag.t = now;
 
@@ -221,6 +240,9 @@ export function CoverflowCarousel({
     const drag = dragRef.current;
     if (!drag || drag.id !== event.pointerId) return;
     dragRef.current = null;
+    isDraggingRef.current = false;
+
+    // Carry momentum flick
     const carried = Math.max(-2, Math.min(2, drag.v * 0.18));
     settle(clamp(Math.round(posRef.current + carried)));
   };
@@ -253,13 +275,16 @@ export function CoverflowCarousel({
 
   return (
     <div
-      className={cn("w-full", className)}
+      className={cn("w-full select-none", className)}
       style={{ ["--cf-card" as string]: cardWidth }}
       role="region"
       aria-roledescription="carousel"
       aria-label={label}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        isDraggingRef.current = false;
+      }}
     >
       <div className="relative">
         <div
@@ -285,7 +310,7 @@ export function CoverflowCarousel({
           }}
         >
           <div
-            className="relative select-none"
+            className="relative"
             style={{
               height: "var(--cf-card)",
               transformStyle: "preserve-3d",
@@ -300,7 +325,9 @@ export function CoverflowCarousel({
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${count}`}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (dragRef.current?.hasDragged) return;
                   if (index === selected && onCardClick) {
                     onCardClick(index);
                   } else {
@@ -318,11 +345,11 @@ export function CoverflowCarousel({
                   src={slide.src}
                   alt={slide.alt}
                   draggable={false}
-                  className="h-full w-full select-none object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="h-full w-full select-none object-cover transition-transform duration-300 group-hover:scale-105 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-canvas via-transparent to-transparent opacity-60 pointer-events-none" />
-                <div className="absolute bottom-2 left-2 right-2 text-center text-xs font-mono font-semibold text-text-heading bg-canvas/80 px-2 py-1 rounded-md border border-border-subtle backdrop-blur">
-                  Tap to Inspect ➔
+                <div className="absolute bottom-2 left-2 right-2 text-center text-xs font-mono font-semibold text-text-heading bg-canvas/80 px-2 py-1 rounded-md border border-border-subtle backdrop-blur pointer-events-none">
+                  Inspect Profile ➔
                 </div>
               </div>
             ))}
