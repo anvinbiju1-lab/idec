@@ -1,29 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { CountdownTimer } from "@/components/ui/CountdownTimer";
 import { EVENTS_DATA } from "@/data/events";
-import { EventItem, EventCategory } from "@/types";
-import { Calendar, MapPin, Clock, Users, ArrowUpRight, Ticket } from "lucide-react";
+import { EventItem } from "@/types";
+import { Calendar, MapPin, Clock, ArrowUpRight } from "lucide-react";
 
 export const EventsSection: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventItem | null>(null);
   const [filter, setFilter] = useState<"All" | "Upcoming" | "Past">("All");
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end center"],
+  });
+
+  const timelineHeight = useTransform(scrollYProgress, [0.1, 0.95], ["0%", "100%"]);
 
   const filteredEvents = EVENTS_DATA.filter(
     (e) => filter === "All" || (filter === "Upcoming" ? e.status === "Upcoming" : e.status === "Past")
   );
 
   return (
-    <section id="events" className="relative z-10 pt-32 sm:pt-40 pb-24 sm:pb-32 bg-surface-l1 border-b border-border-subtle scroll-mt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+    <section id="events" ref={containerRef} className="relative z-10 pt-32 sm:pt-40 pb-24 sm:pb-32 bg-surface-l1 border-b border-border-subtle scroll-mt-24 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-border-subtle pb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-border-subtle pb-8"
+        >
           <div className="space-y-4 max-w-2xl">
             <div className="inline-flex items-center gap-2 font-mono text-xs text-amber tracking-widest uppercase">
               <span>// SECTION 05</span>
@@ -46,27 +60,35 @@ export const EventsSection: React.FC = () => {
               <button
                 key={tab}
                 onClick={() => setFilter(tab)}
-                className={`px-3 py-1.5 text-xs font-mono tracking-wider rounded-sm border transition-all ${
+                className={`px-3.5 py-1.5 text-xs font-mono tracking-wider rounded-sm border transition-all ${
                   filter === tab
-                    ? "bg-amber text-canvas font-semibold border-amber"
-                    : "bg-surface-l2 text-text-body border-border-subtle hover:text-text-heading"
+                    ? "bg-amber text-canvas font-semibold border-amber shadow-[0_0_12px_rgba(255,107,0,0.25)]"
+                    : "bg-surface-l2 text-text-body border-border-subtle hover:text-text-heading hover:border-border-strong"
                 }`}
               >
                 {tab}
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        {/* Timeline Layout */}
+        {/* Animated Timeline Layout */}
         <div className="relative border-l border-border-strong pl-6 sm:pl-10 space-y-12">
+          {/* Scroll-Driven Glowing Timeline Progress Line */}
+          <div className="absolute top-0 bottom-0 -left-[1px] w-[2px] overflow-hidden pointer-events-none">
+            <motion.div
+              style={{ height: timelineHeight }}
+              className="w-full bg-amber shadow-[0_0_12px_#FF6B00]"
+            />
+          </div>
+
           {filteredEvents.map((event, idx) => (
             <motion.div
               key={event.id}
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="relative group"
             >
               {/* Timeline Dot */}
@@ -85,6 +107,7 @@ export const EventsSection: React.FC = () => {
                     src={event.poster}
                     alt={event.title}
                     className="w-full h-full object-cover filter grayscale contrast-125 group-hover:grayscale-0 transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
                   />
                   <div className="absolute top-2 left-2">
                     <Badge variant={event.status === "Upcoming" ? "amber" : "neutral"} showDot>
@@ -150,7 +173,6 @@ export const EventsSection: React.FC = () => {
           ))}
         </div>
       </div>
-
 
       {/* Registration / Agenda Modal */}
       <Modal

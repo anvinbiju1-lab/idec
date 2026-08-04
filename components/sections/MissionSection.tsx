@@ -37,50 +37,71 @@ export const MissionSection: React.FC = () => {
     },
   ];
 
-  return (
-    <section id="mission" className="relative z-10 py-24 sm:py-32 bg-canvas border-b border-border-subtle">
+  const headerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const } },
+  };
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        {/* Editorial Section Header */}
-        <div className="space-y-4 max-w-3xl">
-          <div className="inline-flex items-center gap-2 font-mono text-xs text-amber tracking-widest uppercase">
+  return (
+    <section id="mission" className="relative z-10 py-24 sm:py-32 bg-canvas border-b border-border-subtle overflow-hidden">
+      {/* Background Micro Ambient Glow */}
+      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-amber/5 blur-[120px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
+        {/* Editorial Section Header with Scroll Stagger */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.1 } },
+          }}
+          className="space-y-4 max-w-3xl"
+        >
+          <motion.div variants={headerVariants} className="inline-flex items-center gap-2 font-mono text-xs text-amber tracking-widest uppercase">
             <span>// SECTION 02</span>
             <span className="text-border-strong">•</span>
             <span>THE MISSION STATEMENT</span>
-          </div>
+          </motion.div>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-sans font-semibold text-text-heading tracking-tight leading-tight">
+          <motion.h2 variants={headerVariants} className="text-4xl sm:text-5xl lg:text-6xl font-sans font-semibold text-text-heading tracking-tight leading-tight">
             We are not a college club. <br />
-            We are an innovation engine.
-          </h2>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-text-heading via-text-heading to-amber">
+              We are an innovation engine.
+            </span>
+          </motion.h2>
 
-          <p className="text-text-body text-base sm:text-lg leading-relaxed pt-2">
+          <motion.p variants={headerVariants} className="text-text-body text-base sm:text-lg leading-relaxed pt-1">
             The Innovation & Entrepreneurship Development Cell (IEDC) at Holy Grace Academy of Engineering, Mala, exists to bridge the gap between engineering theory and market deployment.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        {/* 4 Pillars Grid */}
+        {/* 4 Pillars Grid with Premium Staggered Scroll Entrance */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {PILLARS.map((pillar, idx) => {
             const Icon = pillar.icon;
             return (
               <motion.div
                 key={pillar.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 35 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                whileHover={{ y: -4, transition: { duration: 0.2, ease: [0.25, 1, 0.5, 1] } }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.45, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
               >
-                <Card className="h-full flex flex-col justify-between space-y-6">
+                <Card className="h-full flex flex-col justify-between space-y-6 group">
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="font-mono text-xs text-amber tracking-widest">
+                      <span className="font-mono text-xs text-amber tracking-widest font-medium">
                         [{pillar.id}] {pillar.telemetry}
                       </span>
-                      <Icon className="w-5 h-5 text-text-body" />
+                      <div className="p-2 rounded-md bg-surface-l1 border border-border-subtle group-hover:border-amber/30 transition-colors">
+                        <Icon className="w-4 h-4 text-text-body group-hover:text-amber transition-colors" />
+                      </div>
                     </div>
 
-                    <h3 className="text-2xl font-sans font-medium text-text-heading">
+                    <h3 className="text-2xl font-sans font-semibold text-text-heading group-hover:text-amber transition-colors">
                       {pillar.title}
                     </h3>
 
@@ -90,7 +111,7 @@ export const MissionSection: React.FC = () => {
                   </div>
 
                   <div className="pt-4 border-t border-border-subtle flex items-center gap-2 font-mono text-xs text-text-muted">
-                    <CheckCircle2 className="w-4 h-4 text-phosphor-green" />
+                    <CheckCircle2 className="w-4 h-4 text-phosphor-green flex-shrink-0" />
                     <span>VERIFIED INCUBATION PROTOCOL</span>
                   </div>
                 </Card>

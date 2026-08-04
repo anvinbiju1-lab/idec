@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { PROJECTS_DATA } from "@/data/projects";
 import { Project, ProjectCategory } from "@/types";
-import { Github, ExternalLink, ArrowUpRight, Cpu, Layers, DollarSign } from "lucide-react";
+import { Github, ExternalLink, ArrowUpRight } from "lucide-react";
 
 const CATEGORIES: ProjectCategory[] = ["All", "Hardware", "AI & Software", "DeepTech", "IoT"];
 
@@ -21,10 +21,19 @@ export const ProjectsSection: React.FC = () => {
   );
 
   return (
-    <section id="projects" className="relative z-10 py-24 sm:py-32 bg-canvas border-b border-border-subtle">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        {/* Section Header & Filters */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-border-subtle pb-8">
+    <section id="projects" className="relative z-10 py-24 sm:py-32 bg-canvas border-b border-border-subtle overflow-hidden">
+      {/* Background Ambient Radial Amber Glow */}
+      <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-amber/5 blur-[140px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 relative z-10">
+        {/* Section Header & Animated Category Filter Tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 border-b border-border-subtle pb-8"
+        >
           <div className="space-y-4 max-w-2xl">
             <div className="inline-flex items-center gap-2 font-mono text-xs text-amber tracking-widest uppercase">
               <span>// SECTION 04</span>
@@ -41,35 +50,45 @@ export const ProjectsSection: React.FC = () => {
             </p>
           </div>
 
-          {/* Monospaced Category Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 text-xs font-mono tracking-wider rounded-sm transition-all duration-150 border ${
-                  selectedCategory === cat
-                    ? "bg-amber text-canvas font-semibold border-amber shadow-[0_0_12px_rgba(255,107,0,0.25)]"
-                    : "bg-surface-l2 text-text-body border-border-subtle hover:border-border-strong hover:text-text-heading"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
+          {/* Monospaced Category Filter Tabs with Gliding Spring Active Pill */}
+          <div className="flex flex-wrap items-center gap-2 relative">
+            {CATEGORIES.map((cat) => {
+              const isSelected = selectedCategory === cat;
 
-        {/* Asymmetrical Project Grid */}
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`relative px-3.5 py-1.5 text-xs font-mono tracking-wider rounded-sm transition-colors duration-200 border border-transparent ${
+                    isSelected ? "text-canvas font-semibold" : "text-text-body hover:text-text-heading"
+                  }`}
+                >
+                  {isSelected && (
+                    <motion.div
+                      layoutId="category-tab-active"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                      className="absolute inset-0 bg-amber rounded-sm -z-10 shadow-[0_0_15px_rgba(255,107,0,0.3)]"
+                    />
+                  )}
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        {/* Asymmetrical Project Grid with Scroll-Triggered Entrance & Layout Transitions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, idx) => (
               <motion.div
                 key={project.id}
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.3, delay: idx * 0.05 }}
+                initial={{ opacity: 0, scale: 0.95, y: 25 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 25 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
               >
                 <Card
                   enableTilt
