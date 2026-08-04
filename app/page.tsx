@@ -33,7 +33,13 @@ export default function Home() {
   };
 
   return (
-    <main className="relative min-h-screen bg-canvas text-text-body overflow-x-hidden">
+    <main
+      className="relative min-h-screen bg-canvas text-text-body overflow-x-hidden"
+      style={{
+        perspective: "1200px",
+        transformStyle: "preserve-3d",
+      }}
+    >
       {/* CAD Engineering Background Grid */}
       <EngineeringGrid />
 
