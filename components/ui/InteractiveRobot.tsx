@@ -43,12 +43,31 @@ export const InteractiveRobot = () => {
   // Greeting arm animation
   const armRotate = isHovered ? [0, -30, 20, -20, 0] : 0;
 
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (containerRef.current && e.touches.length > 0) {
+      const touch = e.touches[0];
+      const rect = containerRef.current.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      mouseX.set(touch.clientX - centerX);
+      mouseY.set(touch.clientY - centerY);
+    }
+  };
+
+  const handleInteraction = () => {
+    setIsHovered(true);
+    // Auto-reset the wave after 2.5 seconds on mobile tap
+    setTimeout(() => setIsHovered(false), 2500);
+  };
+
   return (
     <div
       ref={containerRef}
       className="relative w-full h-[300px] md:h-[500px] flex items-center justify-center cursor-pointer scale-[0.6] md:scale-100 origin-center transition-transform duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchMove={handleTouchMove}
+      onClick={handleInteraction}
       style={{ perspective: 1000 }}
     >
       <motion.div
