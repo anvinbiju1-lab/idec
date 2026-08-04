@@ -43,7 +43,7 @@ export const MissionSection: React.FC = () => {
   };
 
   return (
-    <section id="mission" className="relative z-10 py-24 sm:py-32 bg-canvas border-b border-border-subtle overflow-hidden">
+    <section id="mission" className="relative z-10 py-24 sm:py-32 bg-canvas overflow-hidden">
       {/* Background Micro Ambient Glow */}
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-amber/5 blur-[120px] rounded-full pointer-events-none" />
 

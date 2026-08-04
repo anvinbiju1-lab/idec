@@ -30,7 +30,7 @@ export const IdeaSection: React.FC = () => {
   };
 
   return (
-    <section id="ideas" className="relative z-10 py-24 sm:py-32 bg-surface-l1 border-b border-border-subtle">
+    <section id="ideas" className="relative z-10 py-24 sm:py-32 bg-surface-l1">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Header */}
         <div className="space-y-4 text-center">

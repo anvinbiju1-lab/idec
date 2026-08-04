@@ -21,7 +21,7 @@ export const ProjectsSection: React.FC = () => {
   );
 
   return (
-    <section id="projects" className="relative z-10 py-24 sm:py-32 bg-canvas border-b border-border-subtle overflow-hidden">
+    <section id="projects" className="relative z-10 py-24 sm:py-32 bg-canvas overflow-hidden">
       {/* Background Ambient Radial Amber Glow */}
       <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-amber/5 blur-[140px] rounded-full pointer-events-none" />
 

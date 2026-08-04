@@ -58,7 +58,7 @@ export const JourneySection: React.FC = () => {
   const progressLineWidth = useTransform(scrollYProgress, [0.1, 0.8], ["0%", "100%"]);
 
   return (
-    <section id="journey" ref={containerRef} className="relative z-10 py-24 sm:py-32 bg-surface-l1 border-b border-border-subtle overflow-hidden">
+    <section id="journey" ref={containerRef} className="relative z-10 py-24 sm:py-32 bg-surface-l1 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
         {/* Section Header */}
         <motion.div

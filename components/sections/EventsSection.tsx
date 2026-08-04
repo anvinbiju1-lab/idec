@@ -28,7 +28,7 @@ export const EventsSection: React.FC = () => {
   );
 
   return (
-    <section id="events" ref={containerRef} className="relative z-10 pt-32 sm:pt-40 pb-24 sm:pb-32 bg-surface-l1 border-b border-border-subtle scroll-mt-24 overflow-hidden">
+    <section id="events" ref={containerRef} className="relative z-10 pt-32 sm:pt-40 pb-24 sm:pb-32 bg-surface-l1 scroll-mt-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 relative z-10">
         {/* Section Header */}
         <motion.div
