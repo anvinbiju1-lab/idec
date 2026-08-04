@@ -141,7 +141,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
 
             {/* Right Column: Interactive Robot */}
             <motion.div 
-              className="w-full max-w-lg hidden lg:block pointer-events-auto z-30"
+              className="w-full max-w-lg flex justify-center items-center pointer-events-auto z-30 -mt-8 lg:mt-0"
               style={{ y: midgroundY, opacity: midgroundOpacity }}
             >
               <InteractiveRobot />

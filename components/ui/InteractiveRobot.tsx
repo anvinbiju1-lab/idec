@@ -46,7 +46,7 @@ export const InteractiveRobot = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[500px] flex items-center justify-center cursor-pointer"
+      className="relative w-full h-[300px] md:h-[500px] flex items-center justify-center cursor-pointer scale-[0.6] md:scale-100 origin-center transition-transform duration-300"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{ perspective: 1000 }}
