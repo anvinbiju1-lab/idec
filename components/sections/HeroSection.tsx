@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { TelemetryTicker } from "@/components/ui/TelemetryTicker";
+import { InteractiveRobot } from "@/components/ui/InteractiveRobot";
 import { ArrowRight } from "lucide-react";
 
 interface HeroSectionProps {
@@ -18,16 +19,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
     offset: ["start start", "end start"],
   });
 
-  // Layer 1: Foreground Headline ("BUILD WHAT MATTERS.")
+  // Layer 1: Foreground Headline
   const headlineScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.0, 1.04, 1.01]);
   const headlineY = useTransform(scrollYProgress, [0, 0.5, 1], [0, -10, -40]);
   const headlineOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [1.0, 0.85, 0.0]);
 
-  // Layer 2: Midground Controls (Badge, Description, CTAs, Ticker)
+  // Layer 2: Midground Controls
   const midgroundY = useTransform(scrollYProgress, [0, 0.8], [0, -50]);
   const midgroundOpacity = useTransform(scrollYProgress, [0, 0.5, 0.9], [1.0, 0.4, 0.0]);
 
-  // Layer 3: Background Panel (CAD Grid, Ambient Glow, Container)
+  // Layer 3: Background Panel
   const bgScale = useTransform(scrollYProgress, [0, 0.8], [1.0, 0.92]);
   const bgY = useTransform(scrollYProgress, [0, 0.8], [0, -20]);
   const bgRadius = useTransform(scrollYProgress, [0, 0.6], ["0px", "24px"]);
@@ -51,94 +52,99 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
         {/* Hairline Border Overlay */}
         <motion.div
           style={{ opacity: bgBorderOpacity }}
-          className="absolute inset-0 border border-white/20 rounded-[24px] pointer-events-none z-30 shadow-[0_30px_90px_rgba(0,0,0,0.95)]"
+          className="absolute inset-0 border border-black/5 rounded-[24px] pointer-events-none z-30 shadow-[0_20px_60px_rgba(0,0,0,0.05)]"
         />
 
         {/* 32px CAD Grid */}
         <div
-          className="absolute inset-0 opacity-[0.35] pointer-events-none z-0"
+          className="absolute inset-0 opacity-[0.4] pointer-events-none z-0"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
+              linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px)
             `,
             backgroundSize: "32px 32px",
           }}
         />
 
-        {/* CAD Crosshairs */}
-        <div className="absolute top-4 left-4 sm:top-6 sm:left-6 font-mono text-[10px] sm:text-xs text-white/20 select-none z-10">+</div>
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-6 font-mono text-[10px] sm:text-xs text-white/20 select-none z-10">+</div>
-        <div className="absolute bottom-14 left-4 sm:bottom-16 sm:left-6 font-mono text-[10px] sm:text-xs text-white/20 select-none z-10">+</div>
-        <div className="absolute bottom-14 right-4 sm:bottom-16 sm:right-6 font-mono text-[10px] sm:text-xs text-white/20 select-none z-10">+</div>
-
         {/* Radial Ambient Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] bg-amber/5 blur-[100px] sm:blur-[140px] rounded-full pointer-events-none z-0" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-amber/10 blur-[100px] rounded-full pointer-events-none z-0" />
 
         {/* Integrated Flex Container */}
         <div className="relative z-20 flex flex-col justify-between h-full pt-12 sm:pt-16 pb-2">
           
           {/* Main Content Area */}
-          <div className="space-y-4 sm:space-y-6 max-w-4xl my-auto">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-10 my-auto w-full">
             
-            {/* Layer 2: Badge */}
-            <motion.div
+            {/* Left Column: Typography */}
+            <div className="space-y-4 sm:space-y-6 max-w-3xl w-full">
+              {/* Layer 2: Badge */}
+              <motion.div
+                style={{ y: midgroundY, opacity: midgroundOpacity }}
+                className="pointer-events-auto"
+              >
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-white border border-gray-200 text-[10px] sm:text-xs font-mono tracking-wider text-gray-800 shadow-sm">
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-phosphor-green animate-pulse" />
+                  <span className="text-gray-900 font-bold">IEDC HOLY GRACE ACADEMY</span>
+                  <span className="text-gray-500 hidden xs:inline">• MALA, KERALA</span>
+                </div>
+              </motion.div>
+
+              {/* Layer 1: Foreground Headline "BUILD WHAT MATTERS." */}
+              <motion.div
+                style={{
+                  scale: headlineScale,
+                  y: headlineY,
+                  opacity: headlineOpacity,
+                }}
+                className="pointer-events-auto origin-left relative z-30"
+              >
+                <h1 className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-sans font-black text-gray-950 tracking-[-0.04em] leading-[1.05]">
+                  BUILD WHAT <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-gray-700 to-amber">
+                    MATTERS.
+                  </span>
+                </h1>
+              </motion.div>
+
+              {/* Layer 2: Subheading & CTAs */}
+              <motion.div
+                style={{ y: midgroundY, opacity: midgroundOpacity }}
+                className="space-y-4 sm:space-y-6 pointer-events-auto"
+              >
+                <p className="text-sm sm:text-lg font-sans text-gray-700 max-w-xl leading-relaxed">
+                  The official Innovation & Entrepreneurship Development Cell of Holy Grace Academy of Engineering. Turning technical brilliance into high-velocity ventures.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={onExploreClick}
+                    icon={<ArrowRight className="w-4 h-4" />}
+                    className="w-full sm:w-auto justify-center bg-gray-950 text-white hover:bg-gray-900"
+                  >
+                    Explore Innovation →
+                  </Button>
+
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={onJoinClick}
+                    className="w-full sm:w-auto justify-center bg-white text-gray-900 border border-gray-200 hover:bg-gray-50"
+                  >
+                    Join the Community
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right Column: Interactive Robot */}
+            <motion.div 
+              className="w-full max-w-lg hidden lg:block pointer-events-auto z-30"
               style={{ y: midgroundY, opacity: midgroundOpacity }}
-              className="pointer-events-auto"
             >
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-sm bg-surface-l2 border border-border-subtle text-[10px] sm:text-xs font-mono tracking-wider text-text-body shadow-sm">
-                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-phosphor-green animate-pulse" />
-                <span className="text-text-heading font-semibold">IEDC HOLY GRACE ACADEMY</span>
-                <span className="text-text-muted hidden xs:inline">• MALA, KERALA</span>
-              </div>
-            </motion.div>
-
-            {/* Layer 1: Foreground Headline "BUILD WHAT MATTERS." */}
-            <motion.div
-              style={{
-                scale: headlineScale,
-                y: headlineY,
-                opacity: headlineOpacity,
-              }}
-              className="pointer-events-auto origin-left relative z-30"
-            >
-              <h1 className="text-3xl sm:text-6xl lg:text-7xl xl:text-8xl font-sans font-semibold text-text-heading tracking-[-0.04em] leading-[1.05]">
-                BUILD WHAT <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-text-heading via-text-heading to-amber">
-                  MATTERS.
-                </span>
-              </h1>
-            </motion.div>
-
-            {/* Layer 2: Subheading & CTAs */}
-            <motion.div
-              style={{ y: midgroundY, opacity: midgroundOpacity }}
-              className="space-y-4 sm:space-y-6 pointer-events-auto"
-            >
-              <p className="text-xs sm:text-lg font-sans text-text-body max-w-2xl leading-relaxed">
-                The official Innovation & Entrepreneurship Development Cell of Holy Grace Academy of Engineering. Turning technical brilliance into high-velocity ventures.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <Button
-                  variant="primary"
-                  size="md"
-                  onClick={onExploreClick}
-                  icon={<ArrowRight className="w-4 h-4" />}
-                  className="w-full sm:w-auto justify-center"
-                >
-                  Explore Innovation →
-                </Button>
-
-                <Button
-                  variant="secondary"
-                  size="md"
-                  onClick={onJoinClick}
-                  className="w-full sm:w-auto justify-center"
-                >
-                  Join the Community
-                </Button>
-              </div>
+              <InteractiveRobot />
             </motion.div>
 
           </div>
@@ -146,7 +152,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onExploreClick, onJoin
           {/* Telemetry Ticker cleanly anchored at bottom */}
           <motion.div
             style={{ y: midgroundY, opacity: midgroundOpacity }}
-            className="pt-3 sm:pt-4 border-t border-white/[0.06] relative z-10 w-full"
+            className="pt-3 sm:pt-4 border-t border-black/5 relative z-10 w-full"
           >
             <TelemetryTicker />
           </motion.div>

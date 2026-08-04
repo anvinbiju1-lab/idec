@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --color-canvas: #070708;
-  --color-surface-l1: #0F0F12;
-  --color-surface-l2: #18181C;
-  --color-surface-l3: #222228;
+  --color-canvas: #FFFFFF;
+  --color-surface-l1: #F8F9FA;
+  --color-surface-l2: #F1F3F5;
+  --color-surface-l3: #E9ECEF;
   --color-accent-amber: #FF6B00;
-  --color-text-heading: #F4F4F6;
-  --color-text-body: #8E8E9A;
-  --color-text-muted: #3F3F4A;
+  --color-text-heading: #111827;
+  --color-text-body: #4B5563;
+  --color-text-muted: #9CA3AF;
 }
 
 /* Base Body Setup */
@@ -25,11 +25,11 @@ body {
 
 /* Custom Text Selection */
 ::selection {
-  background-color: rgba(255, 107, 0, 0.3);
-  color: #F4F4F6;
+  background-color: rgba(255, 107, 0, 0.2);
+  color: #111827;
 }
 
-/* Custom Focus Ring Indicator (Design Bible 11.2) */
+/* Custom Focus Ring Indicator */
 *:focus-visible {
   outline: 2px solid #FF6B00 !important;
   outline-offset: 4px !important;
@@ -50,21 +50,21 @@ html {
   }
 }
 
-/* Custom Dark Scrollbar */
+/* Custom Light Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #070708;
+  background: #FFFFFF;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #18181C;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: #E5E7EB;
+  border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #222228;
+  background: #D1D5DB;
 }
