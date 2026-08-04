@@ -7,7 +7,7 @@ import { TEAM_MEMBERS } from "@/data/team";
 import { TeamMember } from "@/types";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
-import { Linkedin, Github, Mail, Globe, Award, Sparkles } from "lucide-react";
+import { Linkedin, Instagram, Github, Mail, Award, Sparkles } from "lucide-react";
 
 export const TeamSection: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
@@ -22,11 +22,11 @@ export const TeamSection: React.FC = () => {
   }));
 
   return (
-    <section id="team" className="relative z-10 py-24 sm:py-32 bg-canvas overflow-hidden">
+    <section id="team" className="relative z-10 py-20 sm:py-32 bg-canvas overflow-hidden">
       {/* Background Micro Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber/5 blur-[160px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -42,55 +42,59 @@ export const TeamSection: React.FC = () => {
             <span>LEADERSHIP & PANEL MEMBERS</span>
           </div>
 
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-sans font-semibold text-text-heading tracking-tight">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-sans font-semibold text-text-heading tracking-tight">
             The Architects Behind the Cell.
           </h2>
 
-          <p className="text-text-body text-base sm:text-lg leading-relaxed">
+          <p className="text-text-body text-sm sm:text-lg leading-relaxed max-w-2xl mx-auto">
             Faculty leads, student directors, and engineering mentors guiding hardware ventures and student startups at Holy Grace.
           </p>
         </motion.div>
 
-        {/* 3D Perspective Coverflow Carousel for Team Members */}
+        {/* 3D Perspective Coverflow Carousel with AutoPlay & Pause on Hover */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="pt-4"
+          className="pt-2"
         >
           <CoverflowCarousel
             slides={slides}
             rotate={36}
             depth={0.55}
             perspective={2.8}
-            cardWidth="clamp(220px, 32vw, 320px)"
+            cardWidth="clamp(190px, 45vw, 300px)"
             gap={0.06}
             showCaption
             showPagination
             showNavigation
+            autoPlay
+            autoPlayInterval={3200}
+            pauseOnHover
+            onCardClick={(index) => setSelectedMember(TEAM_MEMBERS[index])}
           />
         </motion.div>
 
         {/* Quick Member Selection Cards Below Carousel */}
-        <div className="pt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div className="pt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
           {TEAM_MEMBERS.map((member) => (
             <button
               key={member.id}
               onClick={() => setSelectedMember(member)}
-              className="p-3 bg-surface-l1 hover:bg-surface-l2 border border-border-subtle hover:border-amber/40 rounded-lg text-left transition-all duration-200 group"
+              className="p-2.5 sm:p-3 bg-surface-l1 hover:bg-surface-l2 border border-border-subtle hover:border-amber/40 rounded-lg text-left transition-all duration-200 group active:scale-95"
             >
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2">
                 <img
                   src={member.avatar}
                   alt={member.name}
-                  className="w-8 h-8 rounded-full object-cover filter grayscale group-hover:grayscale-0 transition-all border border-border-subtle"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover filter grayscale group-hover:grayscale-0 transition-all border border-border-subtle flex-shrink-0"
                 />
                 <div className="min-w-0 flex-1">
                   <p className="font-sans text-xs font-semibold text-text-heading truncate group-hover:text-amber transition-colors">
                     {member.name}
                   </p>
-                  <p className="font-mono text-[10px] text-text-muted truncate">
+                  <p className="font-mono text-[9px] sm:text-[10px] text-text-muted truncate">
                     {member.role.split(" ")[0]}
                   </p>
                 </div>
@@ -100,7 +104,7 @@ export const TeamSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Member Bio & Telemetry Modal */}
+      {/* Member Bio & Telemetry Modal with LinkedIn & Instagram links */}
       <Modal
         isOpen={!!selectedMember}
         onClose={() => setSelectedMember(null)}
@@ -112,16 +116,16 @@ export const TeamSection: React.FC = () => {
               <img
                 src={selectedMember.avatar}
                 alt={selectedMember.name}
-                className="w-16 h-16 rounded-xl object-cover border border-amber/30 shadow-lg"
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border border-amber/30 shadow-lg flex-shrink-0"
               />
-              <div>
-                <h3 className="text-lg font-sans font-semibold text-text-heading">
+              <div className="min-w-0">
+                <h3 className="text-base sm:text-lg font-sans font-semibold text-text-heading truncate">
                   {selectedMember.name}
                 </h3>
-                <p className="text-xs font-mono text-amber font-medium">
+                <p className="text-xs font-mono text-amber font-medium truncate">
                   {selectedMember.role}
                 </p>
-                <p className="text-xs font-mono text-text-muted">
+                <p className="text-[11px] sm:text-xs font-mono text-text-muted truncate">
                   {selectedMember.department}
                 </p>
               </div>
@@ -129,7 +133,7 @@ export const TeamSection: React.FC = () => {
 
             <div className="space-y-2">
               <h4 className="font-mono text-xs text-amber tracking-wider uppercase">// EXECUTIVE PROFILE</h4>
-              <p className="text-text-body text-sm leading-relaxed">
+              <p className="text-text-body text-xs sm:text-sm leading-relaxed">
                 {selectedMember.bio}
               </p>
             </div>
@@ -148,25 +152,30 @@ export const TeamSection: React.FC = () => {
               </div>
             )}
 
-            {/* Metrics */}
-            <div className="grid grid-cols-3 gap-3 p-3 bg-surface-l1 rounded-lg border border-border-subtle">
+            {/* Metrics Grid */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 p-3 bg-surface-l1 rounded-lg border border-border-subtle">
               {selectedMember.metrics.map((m) => (
                 <div key={m.label} className="text-center">
-                  <p className="font-mono text-base font-semibold text-text-heading">{m.value}</p>
-                  <p className="font-mono text-[9px] text-text-muted uppercase tracking-tight">{m.label}</p>
+                  <p className="font-mono text-sm sm:text-base font-semibold text-text-heading">{m.value}</p>
+                  <p className="font-mono text-[8px] sm:text-[9px] text-text-muted uppercase tracking-tight">{m.label}</p>
                 </div>
               ))}
             </div>
 
-            {/* Social Links */}
-            <div className="pt-2 border-t border-border-subtle flex flex-wrap items-center gap-3">
-              {selectedMember.linkedIn && (
-                <a href={selectedMember.linkedIn} target="_blank" rel="noreferrer">
-                  <Button variant="secondary" size="sm" icon={<Linkedin className="w-3.5 h-3.5" />}>
-                    LinkedIn
-                  </Button>
-                </a>
-              )}
+            {/* Social Links (LinkedIn, Instagram, GitHub, Email) */}
+            <div className="pt-3 border-t border-border-subtle flex flex-wrap items-center gap-2 sm:gap-3">
+              <a href={selectedMember.linkedIn || "https://linkedin.com"} target="_blank" rel="noreferrer">
+                <Button variant="secondary" size="sm" icon={<Linkedin className="w-3.5 h-3.5 text-[#0A66C2]" />}>
+                  LinkedIn
+                </Button>
+              </a>
+
+              <a href="https://instagram.com" target="_blank" rel="noreferrer">
+                <Button variant="secondary" size="sm" icon={<Instagram className="w-3.5 h-3.5 text-[#E4405F]" />}>
+                  Instagram
+                </Button>
+              </a>
+
               {selectedMember.github && (
                 <a href={selectedMember.github} target="_blank" rel="noreferrer">
                   <Button variant="secondary" size="sm" icon={<Github className="w-3.5 h-3.5" />}>
@@ -174,10 +183,11 @@ export const TeamSection: React.FC = () => {
                   </Button>
                 </a>
               )}
+
               {selectedMember.email && (
                 <a href={`mailto:${selectedMember.email}`}>
                   <Button variant="secondary" size="sm" icon={<Mail className="w-3.5 h-3.5" />}>
-                    Contact
+                    Email
                   </Button>
                 </a>
               )}

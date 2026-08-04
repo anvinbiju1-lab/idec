@@ -36,6 +36,14 @@ export interface CoverflowCarouselProps {
   showCaption?: boolean;
   showPagination?: boolean;
   showNavigation?: boolean;
+  /** Auto play slides */
+  autoPlay?: boolean;
+  /** Auto play interval in milliseconds */
+  autoPlayInterval?: number;
+  /** Pause auto play on hover */
+  pauseOnHover?: boolean;
+  /** Callback when card is clicked */
+  onCardClick?: (index: number) => void;
   /** Names the carousel for assistive tech. */
   label?: string;
   className?: string;
@@ -49,12 +57,16 @@ export function CoverflowCarousel({
   perspective = 3,
   falloff = 0.56,
   fade = 0.1,
-  cardWidth = "clamp(148px, 22vw, 260px)",
+  cardWidth = "clamp(180px, 35vw, 280px)",
   gap = 0.05,
   loop = true,
   showCaption = false,
   showPagination = false,
   showNavigation = false,
+  autoPlay = true,
+  autoPlayInterval = 3000,
+  pauseOnHover = true,
+  onCardClick,
   label = "Cover carousel",
   className,
   cardClassName,
@@ -79,6 +91,7 @@ export function CoverflowCarousel({
   } | null>(null);
 
   const [selected, setSelected] = React.useState(0);
+  const [isHovered, setIsHovered] = React.useState(false);
 
   /** Nearest whole card, folded back into 0..count-1. */
   const indexAt = React.useCallback(
@@ -139,8 +152,6 @@ export function CoverflowCarousel({
           rafRef.current = null;
           return;
         }
-        // ponytail: exponential ease-out, not a spring. Swap in a spring only
-        // if the settle needs overshoot.
         posRef.current += remaining * 0.16;
         paint();
         rafRef.current = requestAnimationFrame(step);
@@ -157,7 +168,6 @@ export function CoverflowCarousel({
 
   const goTo = React.useCallback(
     (index: number) => {
-      // Take the shorter way round rather than unwinding the whole ring.
       const target = loop
         ? index + Math.round((targetRef.current - index) / count) * count
         : index;
@@ -170,6 +180,17 @@ export function CoverflowCarousel({
     (by: number) => settle(clamp(Math.round(targetRef.current) + by)),
     [clamp, settle],
   );
+
+  // AutoPlay Timer
+  React.useEffect(() => {
+    if (!autoPlay || (pauseOnHover && isHovered)) return;
+
+    const timer = setInterval(() => {
+      nudge(1);
+    }, autoPlayInterval);
+
+    return () => clearInterval(timer);
+  }, [autoPlay, autoPlayInterval, isHovered, pauseOnHover, nudge]);
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (rafRef.current !== null) {
@@ -197,7 +218,6 @@ export function CoverflowCarousel({
     const now = performance.now();
     const previous = posRef.current;
     posRef.current = clamp(drag.pos - (event.clientX - drag.x) / pitch);
-    // Cards per second, for the throw.
     drag.v = ((posRef.current - previous) / Math.max(now - drag.t, 1)) * 1000;
     drag.t = now;
 
@@ -210,13 +230,10 @@ export function CoverflowCarousel({
     const drag = dragRef.current;
     if (!drag || drag.id !== event.pointerId) return;
     dragRef.current = null;
-    // Let a flick carry, but never more than two cards.
     const carried = Math.max(-2, Math.min(2, drag.v * 0.18));
     settle(clamp(Math.round(posRef.current + carried)));
   };
 
-  // Card width drives pitch, depth and perspective, so it is the only thing
-  // worth measuring — and only when the box actually changes.
   useIsoLayoutEffect(() => {
     const frame = frameRef.current;
     if (!frame) return;
@@ -250,6 +267,8 @@ export function CoverflowCarousel({
       role="region"
       aria-roledescription="carousel"
       aria-label={label}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative">
         <div
@@ -268,11 +287,9 @@ export function CoverflowCarousel({
               nudge(1);
             }
           }}
-          // Vertical padding keeps the drop shadows clear of the overflow clip.
-          className="cursor-grab overflow-hidden py-10 outline-none ring-ring focus-visible:ring-2 active:cursor-grabbing"
+          className="cursor-grab overflow-hidden py-8 sm:py-10 outline-none ring-ring focus-visible:ring-2 active:cursor-grabbing"
           style={{
             perspective: `calc(var(--cf-card) * ${perspective})`,
-            // Horizontal drag is ours; the page keeps vertical scrolling.
             touchAction: "pan-y",
           }}
         >
@@ -292,8 +309,15 @@ export function CoverflowCarousel({
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${count}`}
+                onClick={() => {
+                  if (index === selected && onCardClick) {
+                    onCardClick(index);
+                  } else {
+                    goTo(index);
+                  }
+                }}
                 className={cn(
-                  "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl bg-surface-l2 border border-border-subtle shadow-xl will-change-transform",
+                  "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl bg-surface-l2 border border-border-subtle shadow-2xl will-change-transform cursor-pointer hover:border-amber/60 transition-colors group",
                   cardClassName,
                 )}
                 style={{ width: "var(--cf-card)" }}
@@ -303,8 +327,12 @@ export function CoverflowCarousel({
                   src={slide.src}
                   alt={slide.alt}
                   draggable={false}
-                  className="h-full w-full select-none object-cover"
+                  className="h-full w-full select-none object-cover transition-transform duration-300 group-hover:scale-105"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-canvas via-transparent to-transparent opacity-60 pointer-events-none" />
+                <div className="absolute bottom-2 left-2 right-2 text-center text-xs font-mono font-semibold text-text-heading bg-canvas/80 px-2 py-1 rounded-md border border-border-subtle backdrop-blur">
+                  Tap to Inspect ➔
+                </div>
               </div>
             ))}
           </div>
@@ -316,7 +344,7 @@ export function CoverflowCarousel({
               type="button"
               aria-label="Previous slide"
               onClick={() => nudge(-1)}
-              className="absolute left-3 top-1/2 z-[200] -translate-y-1/2 rounded-full bg-surface-l2/80 p-2 text-text-heading border border-border-subtle backdrop-blur transition hover:bg-surface-l3"
+              className="absolute left-2 sm:left-3 top-1/2 z-[200] -translate-y-1/2 rounded-full bg-surface-l2/90 p-2 text-text-heading border border-border-subtle backdrop-blur transition hover:bg-surface-l3 active:scale-95"
             >
               <ChevronLeft className="size-5" />
             </button>
@@ -324,7 +352,7 @@ export function CoverflowCarousel({
               type="button"
               aria-label="Next slide"
               onClick={() => nudge(1)}
-              className="absolute right-3 top-1/2 z-[200] -translate-y-1/2 rounded-full bg-surface-l2/80 p-2 text-text-heading border border-border-subtle backdrop-blur transition hover:bg-surface-l3"
+              className="absolute right-2 sm:right-3 top-1/2 z-[200] -translate-y-1/2 rounded-full bg-surface-l2/90 p-2 text-text-heading border border-border-subtle backdrop-blur transition hover:bg-surface-l3 active:scale-95"
             >
               <ChevronRight className="size-5" />
             </button>
@@ -335,20 +363,21 @@ export function CoverflowCarousel({
       {showCaption && active?.title && (
         <div
           key={selected}
-          className="mt-2 flex flex-col items-center px-6 duration-300 animate-in fade-in"
+          onClick={() => onCardClick && onCardClick(selected)}
+          className="mt-3 flex flex-col items-center px-4 cursor-pointer group"
         >
-          <p className="text-[15px] font-semibold tracking-tight text-text-heading font-sans">
+          <p className="text-base sm:text-lg font-semibold tracking-tight text-text-heading font-sans group-hover:text-amber transition-colors">
             {active.title}
           </p>
           {active.subtitle && (
-            <p className="mt-1 text-[13px] text-amber font-mono">
+            <p className="mt-0.5 text-xs sm:text-sm text-amber font-mono">
               {active.subtitle}
             </p>
           )}
           {active.meta && active.meta.length > 0 && (
-            <dl className="mt-4 w-full max-w-[260px] text-[12px] font-mono border-t border-border-subtle pt-2">
+            <dl className="mt-3 w-full max-w-[280px] text-[11px] sm:text-xs font-mono border-t border-border-subtle pt-2">
               {active.meta.map((row) => (
-                <div key={row.label} className="flex justify-between py-[4px]">
+                <div key={row.label} className="flex justify-between py-[3px]">
                   <dt className="text-text-muted">{row.label}</dt>
                   <dd className="font-medium text-text-heading">{row.value}</dd>
                 </div>
@@ -359,7 +388,7 @@ export function CoverflowCarousel({
       )}
 
       {showPagination && (
-        <div className="mt-6 flex items-center justify-center gap-2">
+        <div className="mt-4 sm:mt-6 flex items-center justify-center gap-2">
           {slides.map((_, index) => (
             <button
               key={index}
@@ -368,8 +397,8 @@ export function CoverflowCarousel({
               aria-current={index === selected}
               onClick={() => goTo(index)}
               className={cn(
-                "size-2 rounded-full bg-amber transition-opacity",
-                index === selected ? "opacity-100 shadow-[0_0_8px_#FF6B00]" : "opacity-30",
+                "size-2 rounded-full bg-amber transition-all",
+                index === selected ? "opacity-100 w-5 shadow-[0_0_8px_#FF6B00]" : "opacity-30",
               )}
             />
           ))}
