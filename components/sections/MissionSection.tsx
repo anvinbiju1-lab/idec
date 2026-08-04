@@ -38,7 +38,7 @@ export const MissionSection: React.FC = () => {
   ];
 
   return (
-    <section id="mission" className="relative z-10 -mt-24 sm:-mt-32 pt-32 sm:pt-44 pb-24 sm:pb-32 bg-canvas border-b border-border-subtle">
+    <section id="mission" className="relative z-10 py-24 sm:py-32 bg-canvas border-b border-border-subtle">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Editorial Section Header */}
