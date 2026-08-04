@@ -2,129 +2,135 @@ import { TeamMember } from "@/types";
 
 export const TEAM_MEMBERS: TeamMember[] = [
   {
-    id: "dr-v-s-sooraj",
-    name: "Dr. V. S. Sooraj",
-    role: "Nodal Officer & Executive Director",
-    department: "Department of Mechanical Engineering",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop",
-    bio: "Pioneering technology transfer and student incubation programs at Holy Grace Academy of Engineering. Over 15 years of research experience in precision micro-manufacturing and academic entrepreneurship.",
+    id: "batman-bruce-wayne",
+    name: "Batman (Bruce Wayne)",
+    role: "Executive Director & Tech Vigilante",
+    department: "Applied Stealth & Hardware Innovation",
+    avatar: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop",
+    bio: "I wear a mask to protect the people I care about. Architect of Wayne Enterprises R&D, Batcave quantum computing grid, and high-velocity tactical robotics at Holy Grace Academy.",
     linkedIn: "https://linkedin.com",
-    email: "sooraj.iedc@holygrace.ac.in",
+    instagram: "https://instagram.com",
+    twitter: "https://twitter.com",
+    email: "bruce.wayne@holygrace.ac.in",
     contributions: [
-      "Secured ₹2.4M state incubation grant funding",
-      "Mentored 6 patented student hardware inventions",
-      "Established Holy Grace Prototyping FabLab"
+      "Built Gotham Tactical AI Defense Network",
+      "Designed 12 Stealth Batmobile Prototypes",
+      "Funded ₹10M campus innovation grants"
     ],
     metrics: [
-      { label: "PATENTS MENTORED", value: "06" },
-      { label: "GRANTS APPROVED", value: "₹2.4M" },
-      { label: "YEARS EXP", value: "15+" }
+      { label: "GADGETS FABBED", value: "42" },
+      { label: "GOTHAM SAVED", value: "100%" },
+      { label: "COMBAT EXP", value: "20+ YRS" }
     ]
   },
   {
-    id: "steve-k-john",
-    name: "Steve K. John",
-    role: "Chief Student Officer (CEO)",
-    department: "Computer Science & Engineering",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop",
-    bio: "Full-stack system designer specializing in distributed systems and embedded Rust. Oversees campus startup operations, hackathon execution, and external investor relations.",
+    id: "spider-man-peter-parker",
+    name: "Spider-Man (Peter Parker)",
+    role: "Chief Student Officer (CEO) & Web Developer",
+    department: "Bio-Engineering & Distributed Web Systems",
+    avatar: "https://images.unsplash.com/photo-1604200213928-ba3cf4fc8436?q=80&w=600&auto=format&fit=crop",
+    bio: "With great innovation comes great responsibility. Lead architect for high-tensile bio-silk webs, AI computer vision, and student hackathon operations.",
     linkedIn: "https://linkedin.com",
-    github: "https://github.com",
-    portfolio: "https://stevejohn.dev",
-    email: "ceo.iedc@holygrace.ac.in",
+    instagram: "https://instagram.com",
+    twitter: "https://twitter.com",
+    email: "peter.parker@holygrace.ac.in",
     contributions: [
-      "Co-founder of HyperCompile engine",
-      "Organized BUILDATHON 2025 with 200+ participants",
-      "Led 4 student teams to National Hackathon finals"
+      "Synthesized Electro-Kinetic Web Fluid",
+      "Won 5 National Robotics & Web Hackathons",
+      "Mentored 80+ student web developers"
     ],
     metrics: [
-      { label: "SHIPPED PROJECTS", value: "08" },
-      { label: "COMMUNITY SIZE", value: "120+" },
-      { label: "HACKATHONS WON", value: "04" }
+      { label: "WEBS SLUNG", value: "1.2K" },
+      { label: "PROJECTS SHIPPED", value: "15" },
+      { label: "COMMUNITY SIZE", value: "250+" }
     ]
   },
   {
-    id: "gopika-nair",
-    name: "Gopika Nair",
+    id: "superman-clark-kent",
+    name: "Superman (Clark Kent)",
     role: "Chief Technology Officer (CTO)",
-    department: "Electronics & Communication Engg.",
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop",
-    bio: "Hardware prototyping fanatic with expertise in FPGA design, high-frequency RF telemetry, and KiCad PCB fabrication. Directs hardware lab resources and tech workshops.",
+    department: "Kryptonian Solar Energy & DeepTech",
+    avatar: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop",
+    bio: "Faster than a speeding quantum bit, more powerful than a supercomputer. Directs solar harvesting arrays, Fortress of Solitude data vaults, and zero-friction propulsion systems.",
     linkedIn: "https://linkedin.com",
-    github: "https://github.com",
-    email: "cto.iedc@holygrace.ac.in",
+    instagram: "https://instagram.com",
+    twitter: "https://twitter.com",
+    email: "clark.kent@holygrace.ac.in",
     contributions: [
-      "Lead architect for AeroGrid drone PCB hardware",
-      "Authored 3 technical workshops on signal integrity",
-      "Manager of Holy Grace SMD Assembly Bench"
+      "Built Solar Energy Conversion Reactor",
+      "Pioneered Kryptonian Bio-Tech Research",
+      "Supervised 10 DeepTech Hardware Patents"
     ],
     metrics: [
-      { label: "PCBS DESIGNED", value: "14" },
-      { label: "WORKSHOPS LED", value: "05" },
-      { label: "CHIPS FABBED", value: "03" }
+      { label: "SOLAR YIELD", value: "99.9%" },
+      { label: "SPEED", value: "MACH 20" },
+      { label: "PATENTS HELD", value: "10" }
     ]
   },
   {
-    id: "aravind-p-kurup",
-    name: "Aravind P. Kurup",
-    role: "Chief Operations Officer (COO)",
-    department: "Robotics & Automation Engineering",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&auto=format&fit=crop",
-    bio: "Operations strategist bridging the gap between student hardware concepts and commercial manufacturer supply chains in South India.",
+    id: "iron-man-tony-stark",
+    name: "Iron Man (Tony Stark)",
+    role: "Chief Operations Officer (COO) & Arc Director",
+    department: "Arc Energy & Quantum Mechatronics",
+    avatar: "https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=600&auto=format&fit=crop",
+    bio: "Genius, billionaire, playboy, philanthropist. Built the Mark LXXXV suit in a cave with a box of scraps. Leads hardware lab infrastructure and venture investments.",
     linkedIn: "https://linkedin.com",
-    github: "https://github.com",
-    email: "coo.iedc@holygrace.ac.in",
+    instagram: "https://instagram.com",
+    twitter: "https://twitter.com",
+    email: "tony.stark@holygrace.ac.in",
     contributions: [
-      "Streamlined component acquisition pipeline for 14 projects",
-      "Established industry partnership with KSUM Innovation Hub",
-      "Managed ₹500k event operational budget"
+      "Invented Clean Arc Reactor Fusion",
+      "Engineered JARVIS & FRIDAY AI Engines",
+      "Funded 14 Campus Hardware Ventures"
     ],
     metrics: [
-      { label: "SUPPLIERS ONBOARDED", value: "12" },
-      { label: "SPONSORSHIPS", value: "₹600K" },
-      { label: "ACTIVE LEADS", value: "18" }
+      { label: "SUITS BUILT", value: "85" },
+      { label: "ARC OUTPUT", value: "10 GW" },
+      { label: "IQ SCORE", value: "270" }
     ]
   },
   {
-    id: "rachel-mathew",
-    name: "Rachel Mathew",
-    role: "Chief Financial Officer (CFO)",
-    department: "Civil & Environmental Engineering",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=600&auto=format&fit=crop",
-    bio: "Financial planner and grant manager ensuring zero-friction disbursement of seed funding to verified student incubation teams.",
+    id: "thor-odinson",
+    name: "Thor Odinson",
+    role: "Chief Financial Officer (CFO) & Lightning Lead",
+    department: "High-Voltage Plasma Physics & Asgardian Uru Metal",
+    avatar: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?q=80&w=600&auto=format&fit=crop",
+    bio: "God of Thunder and master of Uru metal forging. Manages campus micro-grants with Mjolnir-level precision and high-voltage plasma research.",
     linkedIn: "https://linkedin.com",
-    email: "cfo.iedc@holygrace.ac.in",
+    instagram: "https://instagram.com",
+    twitter: "https://twitter.com",
+    email: "thor.odinson@holygrace.ac.in",
     contributions: [
-      "Managed micro-grant allocations for 14 active projects",
-      "Created transparent auditing dashboard for campus funding",
-      "Facilitated 2 corporate sponsorship agreements"
+      "Forged Stormbreaker in Nidavellir Star",
+      "Disbursed ₹5.0M incubation grants",
+      "Directed High-Voltage Plasma Testing Bench"
     ],
     metrics: [
-      { label: "GRANTS DISBURSED", value: "₹2.4M" },
-      { label: "AUDIT RATING", value: "100%" },
-      { label: "TEAMS FUNDED", value: "14" }
+      { label: "VOLTAGE", value: "1.21 GW" },
+      { label: "BATTLES WON", value: "1000+" },
+      { label: "WORTHINESS", value: "100%" }
     ]
   },
   {
-    id: "aditya-krishna",
-    name: "Aditya Krishna",
-    role: "Creative Director & UX Architect",
-    department: "Computer Science & Engineering",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=600&auto=format&fit=crop",
-    bio: "Obsessed with high-density monospaced typography, tactile UI physics, and dark mode digital aesthetics. Maintained the IEDC Design System Bible.",
+    id: "wonder-woman-diana-prince",
+    name: "Wonder Woman (Diana Prince)",
+    role: "Creative Director & Truth Architect",
+    department: "Themysciran Metallurgy & Design Systems",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop",
+    bio: "Guardian of truth, justice, and human-centered design systems. Oversees the IEDC Creative Bible, Lasso-of-Truth user testing, and brand strategy.",
     linkedIn: "https://linkedin.com",
-    github: "https://github.com",
-    portfolio: "https://adityakrishna.design",
-    email: "creative.iedc@holygrace.ac.in",
+    instagram: "https://instagram.com",
+    twitter: "https://twitter.com",
+    email: "diana.prince@holygrace.ac.in",
     contributions: [
-      "Created IEDC Master Design System & Creative Bible",
-      "Designed the 2026 digital identity and web engine",
-      "Winner of 2 regional UI/UX design challenges"
+      "Architected Themysciran Design Language",
+      "Led 12 Diversity in Tech Initiatives",
+      "Maintained 100% Truth User Research"
     ],
     metrics: [
-      { label: "TOKENS DEFINED", value: "40+" },
-      { label: "AWWARDS NOMINEES", value: "01" },
-      { label: "UI COMPONENTS", value: "28" }
+      { label: "LASSO TRUTH", value: "100%" },
+      { label: "UI TOKENS", value: "50+" },
+      { label: "AWWARDS WON", value: "05" }
     ]
   }
 ];

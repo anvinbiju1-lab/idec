@@ -52,6 +52,8 @@ export interface TeamMember {
   avatar: string;
   bio: string;
   linkedIn?: string;
+  instagram?: string;
+  twitter?: string;
   github?: string;
   portfolio?: string;
   email: string;
