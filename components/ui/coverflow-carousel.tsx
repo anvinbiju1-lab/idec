@@ -64,7 +64,7 @@ export function CoverflowCarousel({
   showPagination = false,
   showNavigation = false,
   autoPlay = true,
-  autoPlayInterval = 3000,
+  autoPlayInterval = 2500,
   pauseOnHover = true,
   onCardClick,
   label = "Cover carousel",
@@ -77,8 +77,7 @@ export function CoverflowCarousel({
   const cardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
   /** Fractional card index at the centre. The single source of truth. */
   const posRef = React.useRef(0);
-  /** Where the current settle is headed. Stepping off `pos` instead would
-      swallow a keypress that lands mid-flight, before the round-off moves. */
+  /** Where the current settle is headed. */
   const targetRef = React.useRef(0);
   const widthRef = React.useRef(0);
   const rafRef = React.useRef<number | null>(null);
@@ -99,8 +98,7 @@ export function CoverflowCarousel({
     [count],
   );
 
-  // Paint straight to the DOM. Sixty state updates a second would re-render
-  // every card for numbers React never needs to see.
+  // Paint straight to the DOM.
   const paint = React.useCallback(() => {
     const width = widthRef.current;
     if (!width) return;
@@ -110,8 +108,6 @@ export function CoverflowCarousel({
     cardRefs.current.forEach((card, index) => {
       if (!card) return;
 
-      // Fold the distance into the shorter way round the ring. This is the
-      // whole looping mechanism — no cloned nodes, no shuffling the DOM.
       let offset = index - pos;
       if (loop) {
         offset = ((offset % count) + count) % count;
@@ -119,19 +115,13 @@ export function CoverflowCarousel({
       }
 
       const distance = Math.abs(offset);
-      // Both the tilt and the recession ease off as cards travel out —
-      // doubling the distance adds only about half again as much of each.
-      // A linear ramp folds the second card shut; this keeps it readable.
       const ramp = Math.pow(distance, falloff);
-      // Capped short of edge-on so a far card never turns its back.
       const tilt = Math.min(rotate * ramp, 82) * Math.sign(offset);
 
       card.style.transform =
         `translateX(calc(-50% + ${offset * pitch}px)) ` +
         `translateZ(${-depth * width * ramp}px) rotateY(${-tilt}deg)`;
 
-      // A card is teleported across the ring at exactly half a turn out, so it
-      // has to be gone by then or the jump is visible.
       const edge = loop ? Math.min(1, Math.max(0, count / 2 - distance)) : 1;
       card.style.opacity = String(Math.max(0, 1 - fade * distance) * edge);
       card.style.zIndex = String(100 - Math.round(distance));
@@ -152,7 +142,7 @@ export function CoverflowCarousel({
           rafRef.current = null;
           return;
         }
-        posRef.current += remaining * 0.16;
+        posRef.current += remaining * 0.14;
         paint();
         rafRef.current = requestAnimationFrame(step);
       };
@@ -181,16 +171,17 @@ export function CoverflowCarousel({
     [clamp, settle],
   );
 
-  // AutoPlay Timer
+  // Robust AutoPlay Effect
   React.useEffect(() => {
     if (!autoPlay || (pauseOnHover && isHovered)) return;
 
-    const timer = setInterval(() => {
-      nudge(1);
+    const interval = setInterval(() => {
+      const nextTarget = Math.round(targetRef.current) + 1;
+      settle(nextTarget);
     }, autoPlayInterval);
 
-    return () => clearInterval(timer);
-  }, [autoPlay, autoPlayInterval, isHovered, pauseOnHover, nudge]);
+    return () => clearInterval(interval);
+  }, [autoPlay, autoPlayInterval, isHovered, pauseOnHover, settle]);
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     if (rafRef.current !== null) {
