@@ -225,7 +225,6 @@ export function CoverflowCarousel({
 
     const now = performance.now();
     const previous = posRef.current;
-    // Mouse right (positive deltaX) moves cards right (decreases index pos)
     posRef.current = clamp(drag.pos - deltaX / pitch);
     targetRef.current = posRef.current;
     drag.v = ((posRef.current - previous) / Math.max(now - drag.t, 1)) * 1000;
@@ -242,7 +241,6 @@ export function CoverflowCarousel({
     dragRef.current = null;
     isDraggingRef.current = false;
 
-    // Carry momentum flick
     const carried = Math.max(-2, Math.min(2, drag.v * 0.18));
     settle(clamp(Math.round(posRef.current + carried)));
   };
@@ -328,10 +326,9 @@ export function CoverflowCarousel({
                 onClick={(e) => {
                   e.stopPropagation();
                   if (dragRef.current?.hasDragged) return;
-                  if (index === selected && onCardClick) {
+                  goTo(index);
+                  if (onCardClick) {
                     onCardClick(index);
-                  } else {
-                    goTo(index);
                   }
                 }}
                 className={cn(
@@ -413,7 +410,10 @@ export function CoverflowCarousel({
               type="button"
               aria-label={`Go to slide ${index + 1}`}
               aria-current={index === selected}
-              onClick={() => goTo(index)}
+              onClick={() => {
+                goTo(index);
+                if (onCardClick) onCardClick(index);
+              }}
               className={cn(
                 "size-2 rounded-full bg-amber transition-all",
                 index === selected ? "opacity-100 w-5 shadow-[0_0_8px_#FF6B00]" : "opacity-30",
